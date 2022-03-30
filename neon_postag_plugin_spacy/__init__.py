@@ -13,8 +13,8 @@ class SpacyPosTagger(PosTagger):
         lang = lang or self.lang
         # TODO multiple models for lang support
 
-        # restore sentence for spacy
+        # restore sentence from spans and create a spacy doc
         sentence = Tokenizer.restore_spans(spans)
+        doc = self.nlp(sentence)
 
-        tokens = self.nlp(sentence)
-        return [(token.text, token.pos_) for token in tokens]
+        return [(token.idx, token.idx + len(token.text), token.text, token.pos_) for token in doc]
